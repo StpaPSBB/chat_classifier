@@ -46,6 +46,8 @@ class LLMSVC:
                 ]
             })
             )
+            if response.status_code != 200:
+                print(response.text)
             answer_text = response.json()["choices"][0]["message"]["content"].strip()
             category = None
             for char in answer_text:
