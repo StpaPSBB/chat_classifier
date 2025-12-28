@@ -11,7 +11,6 @@ function App() {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Проверка формата
     if (!file.name.endsWith('.json')) {
       setError('Пожалуйста, загрузите файл в формате JSON');
       return;
@@ -36,12 +35,10 @@ function App() {
         }
       );
 
-      // Создаем ссылку для скачивания
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
       
-      // Получаем имя файла из headers
       const contentDisposition = response.headers['content-disposition'];
       let filename = 'classification.png';
       if (contentDisposition) {
@@ -57,13 +54,11 @@ function App() {
       link.remove();
       
       setSuccess(true);
-      
-      // Показываем статистику если есть в headers
+
       const distribution = response.headers['x-distribution'];
       if (distribution) {
         const stats = JSON.parse(distribution);
         console.log('Статистика классификации:', stats);
-        // Можно показать alert с краткой статистикой
         const total = Object.values(stats).reduce((a, b) => a + b, 0);
         alert(`Файл успешно обработан!\n\nСообщений проанализировано: ${total}\n\nДиаграмма сохранена как: ${filename}`);
       }
@@ -92,12 +87,10 @@ function App() {
     if (files.length > 0) {
       const file = files[0];
       if (file.name.endsWith('.json')) {
-        // Создаем искусственное событие для input
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
         document.getElementById('file-input').files = dataTransfer.files;
         
-        // Триггерим изменение
         const event = new Event('change', { bubbles: true });
         document.getElementById('file-input').dispatchEvent(event);
       } else {
@@ -184,10 +177,6 @@ function App() {
           </ol>
         </div>
       </main>
-
-      <footer className="footer">
-        <p>Система классификации сообщений по 6 категориям</p>
-      </footer>
     </div>
   );
 }
